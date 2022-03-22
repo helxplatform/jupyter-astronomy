@@ -14,6 +14,12 @@ RUN unzip awscliv2.zip
 RUN rm awscliv2.zip
 RUN ./aws/install
 
+#COPY pyjs9-2022-03-15.zip /
+#RUN unzip /pyjs9-2022-03-15.zip -d /
+COPY pyjs9-2022-03-18-timeout30.zip /
+RUN unzip /pyjs9-2022-03-18-timeout30.zip -d /
+RUN pip3 install /pyjs9
+
 COPY start-jupyter-argus.sh /usr/local/bin
 
 USER $NB_USER
@@ -25,16 +31,16 @@ RUN conda install --yes --prefix $CONDA_ENV -c conda-forge \
 
 RUN conda install pip
 
-RUN /opt/conda/bin/pip3 install python-otter otter-grader
-
 RUN conda install astropy
 COPY astropy-fits-demo.ipynb ${HOME_DIR}
 COPY s3-fits-demo.ipynb ${HOME_DIR}
 COPY s3-list-demo.ipynb ${HOME_DIR}
+COPY pyjs9-demo.ipynb ${HOME_DIR}
+COPY pyjs9-demo-socketio.ipynb ${HOME_DIR}
 
 RUN conda install boto3
 
 #RUN pip3 install git+https://github.com/ericmandel/pyjs9.git#egg=pyjs9
-#RUN pip3 install socketio
+RUN pip3 install python-socketio
 
 ENTRYPOINT start-jupyter-argus.sh 
