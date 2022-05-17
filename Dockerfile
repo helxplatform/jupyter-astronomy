@@ -8,6 +8,9 @@ USER root
 RUN apt-get update && \
     apt-get install -y vim openssh-client rsync
 
+COPY requirements.txt ${HOME_DIR}/
+#Installing dependencies
+RUN conda install --yes --prefix $CONDA_ENV -c conda-forge --file ${HOME_DIR}/requirements.txt
 
 WORKDIR /
 
@@ -30,12 +33,9 @@ COPY s3-fits-demo.ipynb ${HOME_DIR}
 COPY s3-list-demo.ipynb ${HOME_DIR}
 COPY pyjs9-demo.ipynb ${HOME_DIR}
 COPY pyjs9-demo-socketio.ipynb ${HOME_DIR}
-COPY requirements.txt ${HOME_DIR}/
+
 
 USER $NB_USER
 WORKDIR ${HOME_DIR}
-
-#Installing dependencies
-RUN conda install --yes --prefix $CONDA_ENV -c conda-forge --file requirements.txt
 
 ENTRYPOINT start-jupyter-argus.sh 

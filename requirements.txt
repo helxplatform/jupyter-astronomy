@@ -1,0 +1,6 @@
+python-socketio
+boto3
+astropy
+ipython
+ipywidgets
+
